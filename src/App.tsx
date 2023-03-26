@@ -36,9 +36,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({ highlight, hidden }) => {
     });
 
   return (
-    <div className="grid grid-cols-8 mb-8 gap-0.5 aspect-square ">
-      {squares}
-    </div>
+    <div className="grid grid-cols-8 mb-8 gap-1 aspect-square ">{squares}</div>
   );
 };
 
@@ -102,7 +100,7 @@ const App: React.FC = () => {
       </div>
 
       <div className="w-5/6 bg-white p-8 rounded shadow flex flex-col items-center max-w-[400px]">
-        <h1 className="text-3xl mb-6">Chess Square Color Quiz</h1>
+        <h1 className="text-3xl mb-6">Chess Colors</h1>
         {mode === "board" && <ChessBoard highlight={currentSquare} />}
         {mode === "question" && (
           <h2 className="text-xl mb-4">What color is {currentSquare}?</h2>

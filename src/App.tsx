@@ -99,7 +99,7 @@ const App: React.FC = () => {
         </a>
       </div>
 
-      <div className="w-6/7 bg-white p-8 rounded shadow flex flex-col items-center max-w-[400px]">
+      <div className="w-11/12 bg-white p-8 rounded shadow flex flex-col items-center max-w-[400px]">
         <h1 className="text-3xl mb-6">Chess Colors</h1>
         {mode === "board" && <ChessBoard highlight={currentSquare} />}
         {mode === "question" && (

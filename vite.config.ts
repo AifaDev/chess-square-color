@@ -9,7 +9,7 @@ export default defineConfig({
     VitePWA({
       manifest: {
         name: "Chess Square Color Quiz",
-        short_name: "Chess Quiz",
+        short_name: "Chess colors",
         description:
           "A quiz app that asks you to guess the color of a chess square",
         theme_color: "#ffffff",

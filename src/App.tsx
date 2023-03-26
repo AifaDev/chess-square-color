@@ -9,12 +9,12 @@ const getRandomSquare = () => {
   );
 };
 
-const isSquareGreen = (square: string) => {
+const isSquareblack = (square: string) => {
   const letters = "abcdefgh";
   const numbers = "12345678";
   const letterIdx = letters.indexOf(square[0]);
   const numberIdx = numbers.indexOf(square[1]);
-  return letterIdx % 2 === numberIdx % 2 ? "green" : "white";
+  return letterIdx % 2 === numberIdx % 2 ? "white" : "black";
 };
 
 interface ChessBoardProps {
@@ -55,7 +55,7 @@ const App: React.FC = () => {
   }, [streak]);
 
   const checkAnswer = (answer: string) => {
-    if (answer === isSquareGreen(currentSquare)) {
+    if (answer === isSquareblack(currentSquare)) {
       setStreak(streak + 1);
     } else {
       setStreak(0);
@@ -109,13 +109,13 @@ const App: React.FC = () => {
         )}
         <div className="mb-4">
           <button
-            className="bg-green-500 text-white px-4 py-2 mr-4 rounded"
-            onClick={() => checkAnswer("green")}
+            className="bg-black text-white px-[calc(1rem+2px)] py-[calc(0.5rem+2px)] mr-4 rounded"
+            onClick={() => checkAnswer("black")}
           >
-            Green
+            Black
           </button>
           <button
-            className="bg-white text-black px-4 py-2 border-2 border-gray-500 rounded"
+            className="bg-white text-black px-4 py-2 border-2  border-black rounded"
             onClick={() => checkAnswer("white")}
           >
             White

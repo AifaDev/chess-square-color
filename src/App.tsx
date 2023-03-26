@@ -14,7 +14,7 @@ const isSquareblack = (square: string) => {
   const numbers = "12345678";
   const letterIdx = letters.indexOf(square[0]);
   const numberIdx = numbers.indexOf(square[1]);
-  return letterIdx % 2 === numberIdx % 2 ? "white" : "black";
+  return letterIdx % 2 === numberIdx % 2 ? "black" : "white";
 };
 
 interface ChessBoardProps {
@@ -36,7 +36,9 @@ const ChessBoard: React.FC<ChessBoardProps> = ({ highlight, hidden }) => {
     });
 
   return (
-    <div className="grid grid-cols-8 mb-8 gap-1 aspect-square ">{squares}</div>
+    <div className="grid grid-cols-8 mb-8 gap-1 aspect-square scale-y-[-1]">
+      {squares}
+    </div>
   );
 };
 

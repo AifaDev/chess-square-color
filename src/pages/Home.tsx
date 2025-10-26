@@ -181,27 +181,31 @@ const Home: React.FC<HomeProps> = ({
   // Get button colors based on selected mode (avoid green/yellow/red)
   const buttonColors: Record<
     string,
-    { bg: string; hover: string; active: string }
+    { bg: string; hover: string; active: string; text: string }
   > = {
     "Chess Colors": {
       bg: "bg-blue-500",
       hover: "hover:bg-blue-600",
       active: "active:bg-blue-700",
+      text: "text-blue-500",
     },
     "Board Visualization": {
       bg: "bg-teal-500",
       hover: "hover:bg-teal-600",
       active: "active:bg-teal-700",
+      text: "text-teal-500",
     },
     "Piece Memory": {
       bg: "bg-violet-500",
       hover: "hover:bg-violet-600",
       active: "active:bg-violet-700",
+      text: "text-violet-500",
     },
     "Spatial Reasoning": {
       bg: "bg-pink-500",
       hover: "hover:bg-pink-600",
       active: "active:bg-pink-700",
+      text: "text-pink-500",
     },
   };
 
@@ -209,6 +213,7 @@ const Home: React.FC<HomeProps> = ({
     bg: "bg-blue-500",
     hover: "hover:bg-blue-600",
     active: "active:bg-blue-700",
+    text: "text-blue-500",
   };
 
   return (
@@ -275,8 +280,7 @@ const Home: React.FC<HomeProps> = ({
                 modeMastered && selectedMode.id === mode.id
                   ? "text-yellow-600"
                   : selectedMode.id === mode.id
-                  ? buttonColors[mode.name]?.bg.replace("bg-", "text-") ||
-                    "text-gray-600"
+                  ? buttonColors[mode.name]?.text || "text-gray-600"
                   : "text-gray-400";
 
               return (
@@ -511,8 +515,7 @@ const Home: React.FC<HomeProps> = ({
             <div className="text-xs text-gray-600">High Score</div>
             <div
               className={`text-lg font-bold ${
-                buttonColors[selectedMode.name]?.bg.replace("bg-", "text-") ||
-                "text-blue-600"
+                buttonColors[selectedMode.name]?.text || "text-blue-600"
               }`}
             >
               {highScore}
@@ -523,8 +526,7 @@ const Home: React.FC<HomeProps> = ({
               <div className="text-xs text-gray-600">Current Streak</div>
               <div
                 className={`text-lg font-bold ${
-                  buttonColors[selectedMode.name]?.bg.replace("bg-", "text-") ||
-                  "text-blue-600"
+                  buttonColors[selectedMode.name]?.text || "text-blue-600"
                 }`}
               >
                 {currentStreak}

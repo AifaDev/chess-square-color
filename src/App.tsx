@@ -1,76 +1,39 @@
-import React, { useState, useEffect } from "react";
-
-const getRandomSquare = () => {
-  const letters = "abcdefgh";
-  const numbers = "12345678";
-  return (
-    letters[Math.floor(Math.random() * 8)] +
-    numbers[Math.floor(Math.random() * 8)]
-  );
-};
-
-const isSquareblack = (square: string) => {
-  const letters = "abcdefgh";
-  const numbers = "12345678";
-  const letterIdx = letters.indexOf(square[0]);
-  const numberIdx = numbers.indexOf(square[1]);
-  return letterIdx % 2 === numberIdx % 2 ? "black" : "white";
-};
-
-interface ChessBoardProps {
-  highlight: string;
-  hidden?: boolean;
-}
-
-const ChessBoard: React.FC<ChessBoardProps> = ({ highlight, hidden }) => {
-  const squares = Array(64)
-    .fill(0)
-    .map((_, idx) => {
-      const letter = String.fromCharCode(97 + (7 - (idx % 8)));
-      const number = 8 - Math.floor(idx / 8);
-      const square = `${letter}${number}`;
-      const isHighlighted = square === highlight;
-      const borderColor =
-        isHighlighted && !hidden ? "border-blue-500" : "border-gray-400";
-      return <div key={square} className={`w-8 h-8 border-2 ${borderColor}`} />;
-    });
-
-  return (
-    <div className="grid grid-cols-8 mb-8 gap-1 aspect-square scale-y-[-1]">
-      {squares}
-    </div>
-  );
-};
+import React, { useState } from "react";
+import { GameState, PageType } from "./types/game";
+import Home from "./pages/Home";
+import Practice from "./pages/Practice";
+import Stats from "./pages/Stats";
+import Achievements from "./pages/Achievements";
 
 const App: React.FC = () => {
-  const [currentSquare, setCurrentSquare] = useState(getRandomSquare());
-  const [streak, setStreak] = useState(() => {
-    const storedStreak = localStorage.getItem("streak");
-    return storedStreak ? parseInt(storedStreak, 10) : 0;
-  });
-  const [mode, setMode] = useState("question");
+  const [currentPage, setCurrentPage] = useState<PageType>("home");
+  const [practiceState, setPracticeState] = useState<GameState | null>(null);
 
-  useEffect(() => {
-    localStorage.setItem("streak", streak.toString());
-  }, [streak]);
-
-  const checkAnswer = (answer: string) => {
-    if (answer === isSquareblack(currentSquare)) {
-      setStreak(streak + 1);
-    } else {
-      setStreak(0);
-    }
-    setCurrentSquare(getRandomSquare());
+  const handleStartPractice = (state: GameState) => {
+    setPracticeState(state);
+    setCurrentPage("practice");
   };
 
-  const switchMode = () => {
-    setMode(mode === "question" ? "board" : "question");
-    setCurrentSquare(getRandomSquare());
+  const handleExitPractice = () => {
+    setCurrentPage("home");
+  };
+
+  const handleOpenStats = () => {
+    setCurrentPage("stats");
+  };
+
+  const handleOpenAchievements = () => {
+    setCurrentPage("achievements");
+  };
+
+  const handleBackToHome = () => {
+    setCurrentPage("home");
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="fixed bottom-4 right-4 flex gap-4">
+    <>
+      {/* Social Links - shown on all pages */}
+      <div className="fixed bottom-4 right-4 flex gap-4 z-50">
         <a
           href="https://twitter.com/AifaMain"
           target="_blank"
@@ -101,37 +64,22 @@ const App: React.FC = () => {
         </a>
       </div>
 
-      <div className="w-11/12 bg-white p-8 rounded shadow flex flex-col items-center max-w-[400px]">
-        <h1 className="text-3xl mb-6">Chess Colors</h1>
-        {mode === "board" && <ChessBoard highlight={currentSquare} />}
-        {mode === "question" && (
-          <h2 className="text-xl mb-4">What color is {currentSquare}?</h2>
-        )}
-        <div className="mb-4">
-          <button
-            className="bg-black text-white px-[calc(1rem+2px)] py-[calc(0.5rem+2px)] mr-4 rounded"
-            onClick={() => checkAnswer("black")}
-          >
-            Black
-          </button>
-          <button
-            className="bg-white text-black px-4 py-2 border-2  border-black rounded"
-            onClick={() => checkAnswer("white")}
-          >
-            White
-          </button>
-        </div>
-        <div className="mb-4">
-          <button
-            className="bg-yellow-500 text-white px-4 py-2 rounded"
-            onClick={switchMode}
-          >
-            Switch Mode
-          </button>
-        </div>
-        <p className="text-xl mt-4">Streak: {streak}</p>
-      </div>
-    </div>
+      {/* Page Rendering */}
+      {currentPage === "home" && (
+        <Home
+          onStartPractice={handleStartPractice}
+          onOpenStats={handleOpenStats}
+          onOpenAchievements={handleOpenAchievements}
+        />
+      )}
+      {currentPage === "practice" && practiceState && (
+        <Practice gameState={practiceState} onExit={handleExitPractice} />
+      )}
+      {currentPage === "stats" && <Stats onBack={handleBackToHome} />}
+      {currentPage === "achievements" && (
+        <Achievements onBack={handleBackToHome} />
+      )}
+    </>
   );
 };
 

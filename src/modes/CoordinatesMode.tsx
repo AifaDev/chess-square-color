@@ -102,7 +102,7 @@ const generateWrongOptions = (
 };
 
 export const boardVisualizationController: ModeController = {
-  generateQuestion: (typeId, levelId) => {
+  generateQuestion: (typeId, levelId, boardFlipped) => {
     if (typeId === "coordinateLocation") {
       // Click on board to find coordinate
       const square = getRandomSquare();
@@ -157,8 +157,19 @@ export const boardVisualizationController: ModeController = {
           fileRankType: type,
           isFlipped: false,
         };
+      } else if (levelId === "medium") {
+        // Medium - text input + board flips only on rank reset
+        const isFlipped = boardFlipped !== undefined ? boardFlipped : false;
+        return {
+          type: "input",
+          prompt: `What ${type} is this?`,
+          correctAnswer: value,
+          levelId: levelId,
+          fileRankType: type,
+          isFlipped: isFlipped,
+        };
       } else {
-        // Hard - text input + board flips
+        // Hard - text input + board flips every question
         const isFlipped = Math.random() > 0.5;
         return {
           type: "input",

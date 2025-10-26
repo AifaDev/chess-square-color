@@ -20,13 +20,23 @@ interface PracticeProps {
 }
 
 const Practice: React.FC<PracticeProps> = ({ gameState, onExit }) => {
+  // Board flip state for medium level fileRankRecognition
+  const [boardFlipped, setBoardFlipped] = useState(() => Math.random() > 0.5);
+
   const [question, setQuestion] = useState<Question & { levelId?: string }>(
     () => {
       const controller = getModeController(gameState.modeId);
       // For master level, use hard level logic
       const levelToUse =
         gameState.levelId === "master" ? "hard" : gameState.levelId;
-      const q = controller.generateQuestion(gameState.typeId, levelToUse);
+      const q = controller.generateQuestion(
+        gameState.typeId,
+        levelToUse,
+        gameState.levelId === "medium" &&
+          gameState.typeId === "fileRankRecognition"
+          ? boardFlipped
+          : undefined
+      );
       return { ...q, levelId: gameState.levelId };
     }
   );
@@ -45,13 +55,21 @@ const Practice: React.FC<PracticeProps> = ({ gameState, onExit }) => {
   const [timerStarted, setTimerStarted] = useState(false);
 
   useEffect(() => {
+    // Reset board flip state when game state changes (new game)
+    const newBoardFlipped = Math.random() > 0.5;
+    setBoardFlipped(newBoardFlipped);
+
     const controller = getModeController(gameState.modeId);
     // For master level, use hard level logic
     const levelToUse =
       gameState.levelId === "master" ? "hard" : gameState.levelId;
     const newQuestion = controller.generateQuestion(
       gameState.typeId,
-      levelToUse
+      levelToUse,
+      gameState.levelId === "medium" &&
+        gameState.typeId === "fileRankRecognition"
+        ? newBoardFlipped
+        : undefined
     );
     setQuestion({ ...newQuestion, levelId: gameState.levelId });
 
@@ -172,6 +190,14 @@ const Practice: React.FC<PracticeProps> = ({ gameState, onExit }) => {
         setTimerStarted(false);
         setTimeLeft(60);
       }
+
+      // For medium level fileRankRecognition, flip board on wrong answer (rank reset)
+      if (
+        gameState.levelId === "medium" &&
+        gameState.typeId === "fileRankRecognition"
+      ) {
+        setBoardFlipped(Math.random() > 0.5);
+      }
     }
 
     // Check for mastery achievement
@@ -183,7 +209,11 @@ const Practice: React.FC<PracticeProps> = ({ gameState, onExit }) => {
       gameState.levelId === "master" ? "hard" : gameState.levelId;
     const newQuestion = controller.generateQuestion(
       gameState.typeId,
-      levelToUse
+      levelToUse,
+      gameState.levelId === "medium" &&
+        gameState.typeId === "fileRankRecognition"
+        ? boardFlipped
+        : undefined
     );
     setQuestion({ ...newQuestion, levelId: gameState.levelId });
   };

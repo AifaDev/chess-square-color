@@ -8,7 +8,7 @@ import {
 import ChessBoard from "../components/ChessBoard";
 
 export const chessColorsController: ModeController = {
-  generateQuestion: (typeId, levelId) => {
+  generateQuestion: (typeId, levelId, boardFlipped) => {
     if (typeId === "randomSquareColor") {
       const square = getRandomSquare();
       const squareColor = isSquareBlack(square);

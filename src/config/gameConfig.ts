@@ -22,6 +22,11 @@ export const gameConfig: GameConfig = {
               description: "Multiple choice",
             },
             {
+              id: "medium",
+              name: "Medium",
+              description: "Type answer + board flips on loss",
+            },
+            {
               id: "hard",
               name: "Hard",
               description: "Type answer + board flips",

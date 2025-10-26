@@ -58,7 +58,11 @@ export interface Question {
 }
 
 export interface ModeController {
-  generateQuestion: (typeId: TypeId, levelId: LevelId) => Question;
+  generateQuestion: (
+    typeId: TypeId,
+    levelId: LevelId,
+    boardFlipped?: boolean
+  ) => Question;
   checkAnswer: (question: Question, answer: string) => boolean;
   renderQuestion: (
     question: Question,
